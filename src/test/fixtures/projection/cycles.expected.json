@@ -1,0 +1,52 @@
+{
+  "model": {
+    "summary": {
+      "sessionId": "projection-cycles",
+      "version": 3,
+      "activeLeafId": "c",
+      "pathItemCount": 2,
+      "hiddenCustomCount": 0
+    },
+    "activePathIds": [
+      "a",
+      "c"
+    ],
+    "items": [
+      {
+        "key": "a:entry",
+        "sourceId": "a",
+        "sourceLine": 3,
+        "kind": "user",
+        "title": "User",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Cycle start."
+          }
+        ]
+      },
+      {
+        "key": "c:entry",
+        "sourceId": "c",
+        "sourceLine": 5,
+        "kind": "label",
+        "title": "Label",
+        "metadata": {
+          "targetId": "a",
+          "label": "Physical-last cycle leaf",
+          "alternateBranchCount": 1
+        }
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "cycle",
+      "line": 2
+    },
+    {
+      "code": "cycle",
+      "line": 3
+    }
+  ]
+}

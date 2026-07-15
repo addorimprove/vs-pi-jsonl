@@ -1,0 +1,3 @@
+﻿{"type":"session","id":"fixture-v1","cwd":"/synthetic/v1"}
+{"type":"message","message":{"role":"user","content":"first"}}
+{"type":"compaction","summary":"compact","firstKeptEntryIndex":1}

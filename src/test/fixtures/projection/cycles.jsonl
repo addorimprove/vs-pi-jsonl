@@ -1,0 +1,5 @@
+{"type":"session","version":3,"id":"projection-cycles"}
+{"type":"message","id":"self","parentId":"self","message":{"role":"user","content":"Self-parented entry."}}
+{"type":"message","id":"a","parentId":"b","message":{"role":"user","content":"Cycle start."}}
+{"type":"message","id":"b","parentId":"c","message":{"role":"assistant","content":"Cycle middle."}}
+{"type":"label","id":"c","parentId":"a","targetId":"a","label":"Physical-last cycle leaf"}

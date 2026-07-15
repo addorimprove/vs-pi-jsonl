@@ -1,0 +1,5 @@
+{"type":"session","version":3,"id":"content-fixture"}
+{"type":"message","id":"missing","parentId":null,"message":{"role":"user"}}
+{"type":"message","id":"null","parentId":"missing","message":{"role":"assistant","content":null}}
+{"type":"custom_message","id":"custom-missing","parentId":"null","display":true}
+{"type":"custom_message","id":"custom-null","parentId":"custom-missing","display":true,"content":null}

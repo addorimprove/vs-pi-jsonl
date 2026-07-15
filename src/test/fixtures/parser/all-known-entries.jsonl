@@ -1,0 +1,15 @@
+{"type":"session","version":3,"id":"known-fixture"}
+{"type":"message","id":"user","parentId":null,"message":{"role":"user","content":"user text"}}
+{"type":"message","id":"assistant","parentId":"user","message":{"role":"assistant","content":[{"type":"text","text":"assistant text"},{"type":"thinking","thinking":"thought"},{"type":"toolCall","id":"call-1","name":"fixture_tool","arguments":{"value":1}}]}}
+{"type":"message","id":"tool","parentId":"assistant","message":{"role":"toolResult","content":[{"type":"text","text":"result"}]}}
+{"type":"message","id":"bash","parentId":"tool","message":{"role":"bashExecution","content":"output"}}
+{"type":"message","id":"custom-role","parentId":"bash","message":{"role":"custom","content":"custom role"}}
+{"type":"compaction","id":"compaction","parentId":"custom-role","summary":"summary","firstKeptEntryId":"user","tokensBefore":10}
+{"type":"branch_summary","id":"branch","parentId":"compaction","summary":"branch summary","fromId":"user"}
+{"type":"custom","id":"custom","parentId":"branch","customType":"state","data":{"omitted":true}}
+{"type":"custom_message","id":"visible","parentId":"custom","customType":"notice","display":true,"content":"visible custom"}
+{"type":"custom_message","id":"hidden","parentId":"visible","customType":"hidden","display":false,"content":"hidden custom"}
+{"type":"model_change","id":"model","parentId":"hidden","provider":"fixture","modelId":"model"}
+{"type":"thinking_level_change","id":"thinking","parentId":"model","thinkingLevel":"high"}
+{"type":"label","id":"label","parentId":"thinking","targetId":"user","label":"label"}
+{"type":"session_info","id":"info","parentId":"label","name":"fixture"}

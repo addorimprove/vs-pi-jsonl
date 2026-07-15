@@ -1,0 +1,3 @@
+{"type":"session","version":3,"id":"unknown-fixture","nested":{"not":"kept"},"safeFlag":true}
+{"type":"message","id":"odd-role","parentId":null,"message":{"role":"observer","content":[{"type":"markdown","body":"# opaque","safe":7},{"type":"image","data":"not-retained","mimeType":"image/png"}]},"safeText":"keep","safeNumber":4,"nested":{"drop":true},"details":{"secret":"drop"}}
+{"type":"unrecognized_entry","id":"unknown-entry","parentId":"odd-role","content":"opaque text","safe":false,"nested":{"drop":true},"data":{"drop":true}}

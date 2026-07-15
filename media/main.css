@@ -1,0 +1,344 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  color: var(--vscode-editor-foreground);
+  background: var(--vscode-editor-background);
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  line-height: 1.5;
+  text-align: start;
+}
+
+#app {
+  max-width: 82rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.skip-link {
+  position: absolute;
+  z-index: 1;
+  inset-inline-start: 0.75rem;
+  inset-block-start: -4rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+}
+
+.skip-link:focus {
+  inset-block-start: 0.75rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--vscode-editor-foreground);
+  line-height: 1.25;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+h2 {
+  margin: 1.5rem 0 0.75rem;
+  font-size: 1.15rem;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+button,
+summary {
+  cursor: pointer;
+}
+
+button {
+  border: 1px solid var(--vscode-button-border, var(--vscode-contrastBorder));
+  border-radius: 2px;
+  padding: 0.35rem 0.65rem;
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+  font: inherit;
+}
+
+button:hover {
+  background: var(--vscode-button-hoverBackground);
+}
+
+:where(a, button, summary):focus-visible,
+#app:focus-visible {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: 2px;
+}
+
+.session-header {
+  border-block-end: 1px solid var(--vscode-panel-border);
+  padding-block-end: 1rem;
+}
+
+.session-facts,
+.metadata-list {
+  display: grid;
+  grid-template-columns: minmax(9rem, max-content) minmax(0, 1fr);
+  gap: 0.2rem 0.75rem;
+  margin: 0.8rem 0 0;
+}
+
+.session-facts dt,
+.metadata-list dt {
+  color: var(--vscode-descriptionForeground);
+  font-weight: 600;
+}
+
+.session-facts dd,
+.metadata-list dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.diagnostics ul {
+  margin: 0;
+  padding-inline-start: 1.5rem;
+}
+
+.diagnostic {
+  margin-block: 0.35rem;
+  padding: 0.45rem 0.65rem;
+  border-inline-start: 3px solid var(--vscode-editorWarning-foreground);
+  background: var(--vscode-editorWarning-background, transparent);
+}
+
+.diagnostic-error {
+  border-inline-start-color: var(--vscode-editorError-foreground);
+  background: var(--vscode-editorError-background, transparent);
+}
+
+.diagnostic-info {
+  border-inline-start-color: var(--vscode-editorInfo-foreground);
+  background: var(--vscode-editorInfo-background, transparent);
+}
+
+.page-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 0.75rem;
+}
+
+.page-position {
+  margin: 0;
+  color: var(--vscode-descriptionForeground);
+}
+
+.transcript {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.conversation-card,
+.error-state {
+  border: 1px solid var(--vscode-panel-border);
+  border-inline-start: 4px solid var(--vscode-textBlockQuote-border);
+  border-radius: 3px;
+  padding: 0.85rem 1rem;
+  background: var(--vscode-editorWidget-background);
+}
+
+.card-user {
+  border-inline-start-color: var(--vscode-textLink-foreground);
+}
+
+.card-assistant {
+  border-inline-start-color: var(--vscode-terminal-ansiGreen, var(--vscode-textPreformat-foreground));
+}
+
+.card-tool,
+.card-bash {
+  border-inline-start-color: var(--vscode-terminal-ansiYellow, var(--vscode-textPreformat-foreground));
+}
+
+.card-compaction,
+.card-branchSummary,
+.card-customMessage,
+.card-unknown {
+  border-inline-start-color: var(--vscode-editorInfo-foreground);
+}
+
+.card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.timestamp,
+.source-line,
+.tool-call-id {
+  margin: 0.25rem 0 0;
+  color: var(--vscode-descriptionForeground);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+.markdown {
+  max-width: 80ch;
+}
+
+.markdown > :first-child {
+  margin-block-start: 0.75rem;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote {
+  margin-block: 0.75rem;
+}
+
+.markdown blockquote {
+  margin-inline: 0;
+  padding-inline-start: 0.75rem;
+  border-inline-start: 3px solid var(--vscode-textBlockQuote-border);
+  color: var(--vscode-textBlockQuote-foreground);
+}
+
+.markdown code,
+.code-block {
+  font-family: var(--vscode-editor-font-family, monospace);
+  font-size: var(--vscode-editor-font-size, 0.9em);
+}
+
+.markdown code {
+  padding: 0.08rem 0.25rem;
+  background: var(--vscode-textCodeBlock-background);
+}
+
+.code-block {
+  max-width: none;
+  margin: 0.75rem 0;
+}
+
+.code-block figcaption {
+  padding: 0.25rem 0.5rem;
+  color: var(--vscode-descriptionForeground);
+  background: var(--vscode-textCodeBlock-background);
+}
+
+pre {
+  max-width: 100%;
+  margin: 0;
+  padding: 0.65rem;
+  overflow: auto;
+  white-space: pre;
+  color: var(--vscode-editor-foreground);
+  background: var(--vscode-textCodeBlock-background);
+  tab-size: 2;
+}
+
+.thinking,
+.metadata,
+.compaction,
+.tool-card details {
+  margin-block: 0.75rem;
+}
+
+.thinking,
+.metadata,
+.compaction,
+.tool-card {
+  border: 1px solid var(--vscode-panel-border);
+  padding: 0.5rem 0.65rem;
+}
+
+.tool-card {
+  margin-block: 0.75rem;
+  border-inline-start: 3px solid var(--vscode-textPreformat-foreground);
+}
+
+.tool-error {
+  border-inline-start-color: var(--vscode-editorError-foreground);
+}
+
+.omitted-notice {
+  margin: 0.75rem 0 0;
+  color: var(--vscode-descriptionForeground);
+  font-style: italic;
+}
+
+.empty-state {
+  padding: 1rem;
+  border: 1px dashed var(--vscode-panel-border);
+}
+
+.screen-reader-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (forced-colors: active) {
+  .conversation-card,
+  .thinking,
+  .metadata,
+  .compaction,
+  .tool-card,
+  .diagnostic,
+  .empty-state {
+    border-color: CanvasText;
+  }
+
+  button {
+    border-color: ButtonText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 36rem) {
+  #app {
+    padding: 0.75rem;
+  }
+
+  .session-facts,
+  .metadata-list {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}

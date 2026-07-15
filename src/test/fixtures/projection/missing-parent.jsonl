@@ -1,0 +1,3 @@
+{"type":"session","version":3,"id":"projection-missing-parent"}
+{"type":"message","id":"root","parentId":null,"message":{"role":"user","content":"An earlier valid root."}}
+{"type":"message","id":"orphan","parentId":"not-present","message":{"role":"assistant","content":"The physical-last orphan is the active leaf."}}

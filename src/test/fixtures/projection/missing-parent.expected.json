@@ -1,0 +1,35 @@
+{
+  "model": {
+    "summary": {
+      "sessionId": "projection-missing-parent",
+      "version": 3,
+      "activeLeafId": "orphan",
+      "pathItemCount": 1,
+      "hiddenCustomCount": 0
+    },
+    "activePathIds": [
+      "orphan"
+    ],
+    "items": [
+      {
+        "key": "orphan:assistant:0",
+        "sourceId": "orphan",
+        "sourceLine": 3,
+        "kind": "assistant",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "The physical-last orphan is the active leaf."
+          }
+        ],
+        "title": "Assistant"
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "missing-parent",
+      "line": 3
+    }
+  ]
+}

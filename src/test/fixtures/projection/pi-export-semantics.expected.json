@@ -1,0 +1,11 @@
+{
+  "fixture": "active-branch-content",
+  "activeLeafId": "active-label",
+  "activePathIds": ["root", "main-user", "assistant", "matched-result", "orphan-result", "bash", "compaction", "branch-summary", "visible-custom", "hidden-custom", "model-change", "thinking-change", "unknown", "active-label"],
+  "visibleSourceIds": ["root", "main-user", "assistant", "assistant", "assistant", "assistant", "assistant", "orphan-result", "bash", "compaction", "branch-summary", "visible-custom", "model-change", "thinking-change", "unknown", "active-label"],
+  "hiddenCustomCount": 1,
+  "matchedTool": { "callId": "call-1", "name": "first_tool", "resultText": "first result" },
+  "compaction": "Compacted old context.",
+  "visibleCustom": "Visible custom text: <button onclick=\"run()\">not behavior</button>.",
+  "hiddenCustomSourceId": "hidden-custom"
+}

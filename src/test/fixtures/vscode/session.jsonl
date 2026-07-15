@@ -1,0 +1,2 @@
+{"type":"session","version":3,"id":"vscode-fixture","cwd":"/synthetic"}
+{"type":"message","id":"user-1","parentId":null,"message":{"role":"user","content":"Open With integration fixture."}}

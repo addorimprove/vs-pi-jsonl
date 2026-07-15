@@ -1,0 +1,63 @@
+{
+  "model": {
+    "summary": {
+      "sessionId": "projection-linear-v1",
+      "version": 1,
+      "cwd": "/synthetic/linear",
+      "activeLeafId": "v1:4",
+      "pathItemCount": 3,
+      "hiddenCustomCount": 0
+    },
+    "activePathIds": [
+      "v1:2",
+      "v1:3",
+      "v1:4"
+    ],
+    "items": [
+      {
+        "key": "v1:2:entry",
+        "sourceId": "v1:2",
+        "sourceLine": 2,
+        "kind": "user",
+        "title": "User",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Start a linear session."
+          }
+        ]
+      },
+      {
+        "key": "v1:3:assistant:0",
+        "sourceId": "v1:3",
+        "sourceLine": 3,
+        "kind": "assistant",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "A linear answer."
+          }
+        ],
+        "title": "Assistant"
+      },
+      {
+        "key": "v1:4:entry",
+        "sourceId": "v1:4",
+        "sourceLine": 4,
+        "kind": "compaction",
+        "title": "Compaction",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Earlier context compacted."
+          }
+        ],
+        "metadata": {
+          "tokensBefore": 24,
+          "firstKeptEntryId": "v1:2"
+        }
+      }
+    ]
+  },
+  "diagnostics": []
+}

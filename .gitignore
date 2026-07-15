@@ -1,0 +1,12 @@
+node_modules/
+dist/
+media/main.js
+*.vsix
+.vscode-test/
+.pi-subagents/
+.sandboxes/
+.benchmark/
+*.benchmark.jsonl
+*.heapsnapshot
+*.heapprofile
+*.cpuprofile

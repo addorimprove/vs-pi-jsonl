@@ -1,0 +1,5 @@
+{"type":"session","version":3,"id":"duplicate-fixture"}
+{"type":"message","id":"kept","parentId":null,"message":{"role":"user","content":"first"}}
+{"type":"message","id":"kept","parentId":null,"message":{"role":"user","content":"duplicate"}}
+{"type":"session","version":3,"id":"duplicate-header"}
+{"type":"message","id":"tail","parentId":"kept","message":{"role":"user","content":"tail"}}

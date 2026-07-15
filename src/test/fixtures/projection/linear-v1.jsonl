@@ -1,0 +1,4 @@
+{"type":"session","id":"projection-linear-v1","cwd":"/synthetic/linear"}
+{"type":"message","message":{"role":"user","content":"Start a linear session."}}
+{"type":"message","message":{"role":"assistant","content":"A linear answer."}}
+{"type":"compaction","summary":"Earlier context compacted.","firstKeptEntryIndex":1,"tokensBefore":24}

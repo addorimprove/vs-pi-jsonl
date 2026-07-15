@@ -1,0 +1,6 @@
+{"type":"session","version":3,"id":"recovery"}
+{"type":"message","id":"before","parentId":null,"message":{"role":"user","content":"before"}}
+{not valid json
+[]
+{"type":"message","id":"after","parentId":"before","message":{"role":"assistant","content":"after"}}
+{"type":"message","id":"truncated","parentId":"after"

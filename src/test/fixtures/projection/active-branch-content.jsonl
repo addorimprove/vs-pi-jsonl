@@ -1,0 +1,17 @@
+{"type":"session","version":3,"id":"projection-branch","cwd":"/synthetic/branch"}
+{"type":"message","id":"root","parentId":null,"message":{"role":"user","content":"Choose the current branch."}}
+{"type":"message","id":"alternate-user","parentId":"root","message":{"role":"user","content":"This alternate branch must not be displayed."}}
+{"type":"message","id":"alternate-assistant","parentId":"alternate-user","message":{"role":"assistant","content":"Alternate answer."}}
+{"type":"message","id":"main-user","parentId":"root","message":{"role":"user","content":"Use the main branch."}}
+{"type":"message","id":"assistant","parentId":"main-user","message":{"role":"assistant","provider":"synthetic","model":"model-a","content":[{"type":"text","text":"Before the first tool."},{"type":"thinking","thinking":"Consider the first call."},{"type":"toolCall","id":"call-1","name":"first_tool","arguments":{"query":"one"}},{"type":"text","text":"Between calls."},{"type":"toolCall","id":"call-2","name":"second_tool","arguments":{"query":"two"}},{"type":"thinking","thinking":"After both calls."},{"type":"text","text":"Final assistant text."}]}}
+{"type":"message","id":"matched-result","parentId":"assistant","message":{"role":"toolResult","toolCallId":"call-1","toolName":"first_tool","content":"first result"}}
+{"type":"message","id":"orphan-result","parentId":"matched-result","message":{"role":"toolResult","toolCallId":"missing-call","toolName":"missing_tool","content":"orphan result","isError":true}}
+{"type":"message","id":"bash","parentId":"orphan-result","message":{"role":"bashExecution","command":"exit 1","output":"bash failed","exitCode":1,"content":"bash failed"}}
+{"type":"compaction","id":"compaction","parentId":"bash","summary":"Compacted old context.","firstKeptEntryId":"root","tokensBefore":42}
+{"type":"branch_summary","id":"branch-summary","parentId":"compaction","summary":"A summarized branch.","fromId":"root"}
+{"type":"custom_message","id":"visible-custom","parentId":"branch-summary","customType":"notice","display":true,"content":"Visible custom text: <button onclick=\"run()\">not behavior</button>.","data":{"action":"run","nested":{"secret":"not retained"}}}
+{"type":"custom_message","id":"hidden-custom","parentId":"visible-custom","customType":"notice","display":false,"content":"Hidden custom message."}
+{"type":"model_change","id":"model-change","parentId":"hidden-custom","provider":"synthetic","modelId":"model-b"}
+{"type":"thinking_level_change","id":"thinking-change","parentId":"model-change","thinkingLevel":"high"}
+{"type":"<unknown>","id":"unknown","parentId":"thinking-change","content":"<script>not executable</script>","nested":{"must":"not cross boundary"}}
+{"type":"label","id":"active-label","parentId":"unknown","targetId":"root","label":"Physical last accepted leaf"}

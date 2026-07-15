@@ -1,0 +1,10 @@
+**
+!package.json
+!README.md
+!CHANGELOG.md
+!THIRD-PARTY-NOTICES.md
+!LICENSE
+!dist/core/**/*.js
+!dist/extension/**/*.js
+!media/main.css
+!media/main.js

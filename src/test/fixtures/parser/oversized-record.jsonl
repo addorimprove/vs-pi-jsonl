@@ -1,0 +1,3 @@
+{"type":"session","version":3,"id":"oversized-fixture"}
+{"type":"message","id":"too-large","parentId":null,"message":{"role":"user","content":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}}
+{"type":"message","id":"after","parentId":null,"message":{"role":"user","content":"retained"}}

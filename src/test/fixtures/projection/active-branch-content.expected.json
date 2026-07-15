@@ -1,0 +1,263 @@
+{
+  "model": {
+    "summary": {
+      "sessionId": "projection-branch",
+      "version": 3,
+      "cwd": "/synthetic/branch",
+      "activeLeafId": "active-label",
+      "pathItemCount": 16,
+      "hiddenCustomCount": 1
+    },
+    "activePathIds": [
+      "root",
+      "main-user",
+      "assistant",
+      "matched-result",
+      "orphan-result",
+      "bash",
+      "compaction",
+      "branch-summary",
+      "visible-custom",
+      "hidden-custom",
+      "model-change",
+      "thinking-change",
+      "unknown",
+      "active-label"
+    ],
+    "items": [
+      {
+        "key": "root:entry",
+        "sourceId": "root",
+        "sourceLine": 2,
+        "kind": "user",
+        "title": "User",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Choose the current branch."
+          }
+        ]
+      },
+      {
+        "key": "main-user:entry",
+        "sourceId": "main-user",
+        "sourceLine": 5,
+        "kind": "user",
+        "title": "User",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Use the main branch."
+          }
+        ]
+      },
+      {
+        "key": "assistant:assistant:0",
+        "sourceId": "assistant",
+        "sourceLine": 6,
+        "kind": "assistant",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Before the first tool."
+          },
+          {
+            "kind": "thinking",
+            "text": "Consider the first call."
+          }
+        ],
+        "title": "Assistant"
+      },
+      {
+        "key": "assistant:tool:2",
+        "sourceId": "assistant",
+        "sourceLine": 6,
+        "kind": "tool",
+        "title": "first_tool",
+        "tool": {
+          "callId": "call-1",
+          "name": "first_tool",
+          "argumentsText": "{\"query\":\"one\"}",
+          "resultText": "first result"
+        }
+      },
+      {
+        "key": "assistant:assistant:1",
+        "sourceId": "assistant",
+        "sourceLine": 6,
+        "kind": "assistant",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Between calls."
+          }
+        ],
+        "title": "Assistant (continued)"
+      },
+      {
+        "key": "assistant:tool:4",
+        "sourceId": "assistant",
+        "sourceLine": 6,
+        "kind": "tool",
+        "title": "second_tool",
+        "tool": {
+          "callId": "call-2",
+          "name": "second_tool",
+          "argumentsText": "{\"query\":\"two\"}"
+        }
+      },
+      {
+        "key": "assistant:assistant:2",
+        "sourceId": "assistant",
+        "sourceLine": 6,
+        "kind": "assistant",
+        "blocks": [
+          {
+            "kind": "thinking",
+            "text": "After both calls."
+          },
+          {
+            "kind": "text",
+            "text": "Final assistant text."
+          }
+        ],
+        "title": "Assistant (continued)"
+      },
+      {
+        "key": "orphan-result:orphan",
+        "sourceId": "orphan-result",
+        "sourceLine": 8,
+        "kind": "tool",
+        "title": "Unmatched tool result",
+        "tool": {
+          "callId": "missing-call",
+          "name": "missing_tool",
+          "resultText": "orphan result",
+          "isError": true,
+          "unmatchedResult": true
+        }
+      },
+      {
+        "key": "bash:entry",
+        "sourceId": "bash",
+        "sourceLine": 9,
+        "kind": "bash",
+        "title": "Bash",
+        "tool": {
+          "name": "bash",
+          "argumentsText": "exit 1",
+          "resultText": "bash failed",
+          "isError": true
+        },
+        "metadata": {
+          "command": "exit 1",
+          "output": "bash failed",
+          "exitCode": 1,
+          "role": "bashExecution"
+        }
+      },
+      {
+        "key": "compaction:entry",
+        "sourceId": "compaction",
+        "sourceLine": 10,
+        "kind": "compaction",
+        "title": "Compaction",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Compacted old context."
+          }
+        ],
+        "metadata": {
+          "firstKeptEntryId": "root",
+          "tokensBefore": 42
+        }
+      },
+      {
+        "key": "branch-summary:entry",
+        "sourceId": "branch-summary",
+        "sourceLine": 11,
+        "kind": "branchSummary",
+        "title": "Branch summary",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "A summarized branch."
+          }
+        ],
+        "metadata": {
+          "fromId": "root"
+        }
+      },
+      {
+        "key": "visible-custom:entry",
+        "sourceId": "visible-custom",
+        "sourceLine": 12,
+        "kind": "customMessage",
+        "title": "Custom message",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "Visible custom text: <button onclick=\"run()\">not behavior</button>."
+          }
+        ],
+        "metadata": {
+          "customType": "notice",
+          "display": true
+        }
+      },
+      {
+        "key": "model-change:entry",
+        "sourceId": "model-change",
+        "sourceLine": 14,
+        "kind": "modelChange",
+        "title": "Model change",
+        "metadata": {
+          "provider": "synthetic",
+          "modelId": "model-b"
+        }
+      },
+      {
+        "key": "thinking-change:entry",
+        "sourceId": "thinking-change",
+        "sourceLine": 15,
+        "kind": "thinkingChange",
+        "title": "Thinking level change",
+        "metadata": {
+          "thinkingLevel": "high"
+        }
+      },
+      {
+        "key": "unknown:entry",
+        "sourceId": "unknown",
+        "sourceLine": 16,
+        "kind": "unknown",
+        "title": "Unknown entry: &lt;unknown&gt;",
+        "blocks": [
+          {
+            "kind": "text",
+            "text": "<script>not executable</script>"
+          }
+        ]
+      },
+      {
+        "key": "active-label:entry",
+        "sourceId": "active-label",
+        "sourceLine": 17,
+        "kind": "label",
+        "title": "Label",
+        "metadata": {
+          "targetId": "root",
+          "label": "Physical last accepted leaf",
+          "alternateBranchCount": 1
+        }
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "unmatched-tool-result",
+      "line": 8
+    }
+  ]
+}

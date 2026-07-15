@@ -1,0 +1,3 @@
+{"type":"session","version":3,"id":"fixture-v3"}
+{"type":"message","id":"legacy","parentId":null,"message":{"role":"hookMessage","content":"legacy hook"}}
+{"type":"message","id":"assistant","parentId":"legacy","message":{"role":"assistant","content":[{"type":"thinking","thinking":"consider"},{"type":"text","text":"answer"}]}}
