@@ -30,8 +30,9 @@ export function createPreviewHtml(
   <title>Pi Session Preview</title>
 </head>
 <body>
-  <a class="skip-link" href="#transcript">Skip to transcript</a>
-  <main id="app" tabindex="-1"></main>
+  <button id="hamburger" title="Open sidebar"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><rect x="5" y="6" width="2" height="12"/><path d="M6 12h10c1 0 2 0 2-2V8"/></svg></button>
+  <div id="sidebar-overlay"></div>
+  <div id="app"></div>
   <script nonce="${nonce}" src="${scriptUri.toString()}"></script>
 </body>
 </html>`;

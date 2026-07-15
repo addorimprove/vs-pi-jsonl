@@ -12,7 +12,7 @@ test('webview renderer has no network APIs, unsafe HTML sinks, or URI activation
   assert.doesNotMatch(webview, /\.href\s*=|command:/);
   assert.match(webview, /createTextNode/);
   assert.match(webview, /type: 'requestPage'/);
-  assert.match(webview, /details/);
-  assert.match(webview, /Compaction summary/);
+  assert.match(webview, /thinking-text/);
+  assert.match(webview, /compaction-collapsed/);
   assert.match(webview, /link omitted/);
 });
