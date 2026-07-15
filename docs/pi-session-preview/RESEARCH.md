@@ -13,7 +13,7 @@
 - Installed executable: `pi` 0.80.6, package `@earendil-works/pi-coding-agent` (MIT).
 - Installed format documentation: `.../docs/session-format.md`; it names v1 linear, v2 tree IDs, v3 `hookMessage`→`custom`.
 - Installed exporter: `.../dist/core/export-html/{index.js,template.js,template.css,template.html,vendor/marked.min.js,vendor/highlight.min.js}`.
-- Upstream checkout consulted: `/Users/rajan/Documents/GitHub/pi-mono`, `main` `84d134061f0e0f338e67028488bd1b78c8bc6d25` (package 0.65.0). It is useful source evidence but not version-identical to installed 0.80.6.
+- Upstream `pi-mono` checkout consulted at `main` commit `84d134061f0e0f338e67028488bd1b78c8bc6d25` (package 0.65.0). It is useful source evidence but not version-identical to installed 0.80.6.
 - Upstream format/source links: https://github.com/earendil-works/pi-mono/blob/main/packages/coding-agent/src/core/session-manager.ts and https://github.com/earendil-works/pi-mono/tree/main/packages/coding-agent/src/core/export-html
 
 ## Local behavioral probes

@@ -25,6 +25,6 @@ No chat input; Pi runtime or extension execution; sidebar/session browser; file 
 ## Sources
 - VS Code custom editors: https://code.visualstudio.com/api/extension-guides/custom-editors
 - VS Code API `CustomTextEditorProvider`: https://code.visualstudio.com/api/references/vscode-api#CustomTextEditorProvider
-- Pi session format (installed Pi 0.80.6): `/Users/rajan/.nvm/versions/node/v24.14.0/lib/node_modules/@earendil-works/pi-coding-agent/docs/session-format.md`
+- Pi session format from the locally installed Pi 0.80.6 documentation (`docs/session-format.md`)
 
 See [REQUIREMENTS.md](REQUIREMENTS.md) and [DECISIONS.md](DECISIONS.md).
