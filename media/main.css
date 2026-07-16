@@ -1120,6 +1120,7 @@
     }
 
 /* Extension-only states; shared reference selectors above are verbatim. */
+@media (max-width: 900px) { body:has(#sidebar.open) #hamburger { display: none; } }
 .diagnostics { margin-bottom: var(--line-height); }
 .diagnostics:empty { display: none; }
 .diagnostics h2 { color: var(--warning); font-size: 11px; margin: 0 0 4px; }

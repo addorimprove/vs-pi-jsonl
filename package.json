@@ -8,11 +8,11 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/rajan-personal/pi-session-preview"
+    "url": "https://github.com/addorimprove/vs-code-pi-session-extension"
   },
-  "homepage": "https://github.com/rajan-personal/pi-session-preview#readme",
+  "homepage": "https://github.com/addorimprove/vs-code-pi-session-extension#readme",
   "bugs": {
-    "url": "https://github.com/rajan-personal/pi-session-preview/issues"
+    "url": "https://github.com/addorimprove/vs-code-pi-session-extension/issues"
   },
   "keywords": [
     "pi",
