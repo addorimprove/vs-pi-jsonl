@@ -11,8 +11,8 @@ A read-only VS Code viewer for local [Pi](https://github.com/badlogic/pi-mono) s
 Requires desktop VS Code 1.127+.
 
 ```sh
-git clone https://github.com/addorimprove/vs-code-pi-session-extension.git
-cd vs-code-pi-session-extension
+git clone https://github.com/addorimprove/vs-pi-jsonl.git
+cd vs-pi-jsonl
 npm ci && npm run package:vsix
 code --install-extension ./pi-session-preview.vsix
 ```

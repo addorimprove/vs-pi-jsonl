@@ -8,11 +8,11 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/addorimprove/vs-code-pi-session-extension"
+    "url": "https://github.com/addorimprove/vs-pi-jsonl"
   },
-  "homepage": "https://github.com/addorimprove/vs-code-pi-session-extension#readme",
+  "homepage": "https://github.com/addorimprove/vs-pi-jsonl#readme",
   "bugs": {
-    "url": "https://github.com/addorimprove/vs-code-pi-session-extension/issues"
+    "url": "https://github.com/addorimprove/vs-pi-jsonl/issues"
   },
   "keywords": [
     "pi",
