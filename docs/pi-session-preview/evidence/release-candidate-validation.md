@@ -44,7 +44,7 @@ code --extensions-dir <temporary-dir> --list-extensions --show-versions
 unzip -t pi-session-preview.vsix
 ```
 
-The CLI installed `addorimprove.pi-session-preview@0.0.1`; archive integrity passed. The final repeat installed the 36,088-byte/19-entry VSIX into a fresh temporary extensions directory, confirmed the exact extension ID/version, and deleted the temporary directory afterward.
+The CLI installed `addorimprove.pi-session-preview@0.0.1`; archive integrity passed. The final repeat installed the 41,888-byte/19-entry VSIX into a fresh temporary extensions directory, confirmed the exact extension ID/version, and deleted the temporary directory afterward.
 
 ## Attribution and support audit
 
