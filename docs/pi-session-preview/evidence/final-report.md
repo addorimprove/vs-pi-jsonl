@@ -1,7 +1,7 @@
 # Final release-candidate report
 
 **Workflow:** `wf_0001`  
-**Candidate:** `rajan.pi-session-preview@0.0.1`  
+**Candidate:** `addorimprove.pi-session-preview@0.0.1`
 **Date:** 2026-07-16  
 **Scope:** frozen v1 only; no publish, push, pull request, or scope expansion.
 

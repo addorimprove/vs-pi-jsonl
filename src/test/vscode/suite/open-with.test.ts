@@ -34,7 +34,7 @@ suite('Pi Session Preview Open With', () => {
     });
     await waitFor(() => activeInputIsPreview(fixtureUri));
 
-    const extension = vscode.extensions.getExtension('rajan.pi-session-preview');
+    const extension = vscode.extensions.getExtension('addorimprove.pi-session-preview');
     const editor = extension?.packageJSON?.contributes?.customEditors?.find(
       (candidate: { viewType?: unknown }) => candidate.viewType === VIEW_TYPE
     );

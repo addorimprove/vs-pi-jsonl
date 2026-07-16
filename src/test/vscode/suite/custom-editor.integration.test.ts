@@ -23,7 +23,7 @@ suite('Pi Session Preview custom editor', () => {
   const temporaryUris: vscode.Uri[] = [];
 
   suiteSetup(async () => {
-    const extension = vscode.extensions.getExtension<PreviewIntegrationProbe>('rajan.pi-session-preview');
+    const extension = vscode.extensions.getExtension<PreviewIntegrationProbe>('addorimprove.pi-session-preview');
     assert(extension !== undefined, 'Pi Session Preview extension must be discoverable.');
     probe = await extension.activate();
     assert(probe !== undefined, 'Development activation must expose the local integration probe.');
@@ -296,7 +296,7 @@ async function waitFor(predicate: () => boolean): Promise<void> {
 async function waitForInit(uri: vscode.Uri, predicate: (event: InitEvent) => boolean = () => true): Promise<InitEvent> {
   let found: InitEvent | undefined;
   await waitFor(() => {
-    found = vscode.extensions.getExtension<PreviewIntegrationProbe>('rajan.pi-session-preview')?.exports
+    found = vscode.extensions.getExtension<PreviewIntegrationProbe>('addorimprove.pi-session-preview')?.exports
       ?.events()
       .find((event): event is InitEvent => isInit(event) && event.uri === uri.toString() && predicate(event));
     return found !== undefined;

@@ -32,7 +32,7 @@ Results:
 - VS Code Extension Development Host: 6 passed on cached VS Code 1.127.0, darwin-arm64. This includes same-group raw/preview/source fallback, source-byte immutability, dirty buffers, external updates, malformed recovery, revision/disposal lifecycle, and 20 MiB/10,000-entry bounded-page initialization (681 ms for that case, below 2 s).
 - Webview security/accessibility tests: passed as part of unit suite, including hostile content, CSP/static-asset rules, DOM sink assertions, malformed DTO rejection, semantic controls, and axe-core zero serious/critical findings.
 - Large benchmark: passed. Final measured 20 MiB parse+normalize p95 99.9 ms, first useful render p95 7.6 ms, 50 cards/365 DOM nodes; see [large-file-benchmark.md](large-file-benchmark.md).
-- VSIX package test: passed. `pi-session-preview.vsix` contains exactly 19 runtime/package files and is 36,088 bytes (under the 2 MiB cap), including README, CHANGELOG, and THIRD-PARTY-NOTICES alongside the allowlisted runtime.
+- VSIX package test: passed. `pi-session-preview.vsix` contains exactly 19 runtime/package files and is 41,888 bytes (under the 2 MiB cap), including README, CHANGELOG, and THIRD-PARTY-NOTICES alongside the allowlisted runtime.
 
 ## VSIX smoke
 
@@ -44,7 +44,7 @@ code --extensions-dir <temporary-dir> --list-extensions --show-versions
 unzip -t pi-session-preview.vsix
 ```
 
-The CLI installed `rajan.pi-session-preview@0.0.1`; archive integrity passed. The final repeat installed the 36,088-byte/19-entry VSIX into a fresh temporary extensions directory, confirmed the exact extension ID/version, and deleted the temporary directory afterward.
+The CLI installed `addorimprove.pi-session-preview@0.0.1`; archive integrity passed. The final repeat installed the 36,088-byte/19-entry VSIX into a fresh temporary extensions directory, confirmed the exact extension ID/version, and deleted the temporary directory afterward.
 
 ## Attribution and support audit
 

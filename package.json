@@ -3,7 +3,7 @@
   "displayName": "Pi Session Preview",
   "description": "Optional, read-only local preview for Pi session JSONL files.",
   "version": "0.0.1",
-  "publisher": "rajan",
+  "publisher": "addorimprove",
   "license": "MIT",
   "private": true,
   "repository": {
