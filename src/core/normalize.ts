@@ -344,7 +344,7 @@ function itemForEntry(entry: NormalizedEntry): ViewItem | undefined {
     case 'branchSummary':
       return contentItem(entry, 'branchSummary', 'Branch summary', metadataFor(entry));
     case 'customMessage':
-      return contentItem(entry, 'customMessage', entry.type === 'custom' ? 'Custom state notice' : 'Custom message', metadataFor(entry));
+      return contentItem(entry, 'customMessage', customMessageTitle(entry), metadataFor(entry));
     case 'modelChange':
       return metadataItem(entry, 'modelChange', 'Model change');
     case 'thinkingChange':
@@ -377,6 +377,15 @@ function contentItem(
     ...(Object.keys(metadata).length === 0 ? {} : { metadata: freezeObject(metadata) }),
     ...(entry.omitted === undefined ? {} : { omitted: entry.omitted })
   });
+}
+
+function customMessageTitle(entry: NormalizedEntry): string {
+  switch (entry.fields.customType) {
+    case 'subagent_stdout': return 'Standard output';
+    case 'subagent_stderr': return 'Standard error';
+    case 'subagent_truncated': return 'Transcript truncated';
+    default: return entry.type === 'custom' ? 'Custom state notice' : 'Custom message';
+  }
 }
 
 function metadataItem(entry: NormalizedEntry, kind: ItemKind, title: string): ViewItem {

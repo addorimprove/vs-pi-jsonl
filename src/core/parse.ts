@@ -84,6 +84,7 @@ export function parsePiSession(input: ParseInput): ParseResult {
   const ids = new Set<string>();
   const ordinalIds = new Map<number, string>();
   let previousV1Id: string | null = null;
+  let childTranscript = false;
   let framedOrdinal = 0;
   const lateHeaderLines: number[] = [];
   let lineStart = 0;
@@ -144,8 +145,33 @@ export function parsePiSession(input: ParseInput): ParseResult {
             lineStart = newline === -1 || newline >= bytesRead ? bytesRead : newline + 1;
             continue;
           }
+          if (isChildTranscriptRecord(value)) {
+            childTranscript = true;
+            header = normalizeChildTranscriptHeader({ value, line: physicalLine }, semanticDiagnostics, limits);
+          }
         }
-        if (value.type === 'session') {
+        if (childTranscript) {
+          if (isChildRuntimeUserRecord(value)) {
+            dropChildInitialPrompts(records);
+          }
+          const entry = normalizeChildTranscriptEntry(
+            { value, line: physicalLine },
+            records.at(-1)?.id ?? null,
+            semanticDiagnostics,
+            limits
+          );
+          if (entry !== undefined) {
+            if (records.length >= limits.maxItems) {
+              truncated = true;
+              diagnose(semanticDiagnostics, 'record-limit', 'warning', physicalLine, 'Stopped after the configured entry limit.', {
+                count: records.length + 1,
+                limit: limits.maxItems
+              });
+              break;
+            }
+            records.push(entry);
+          }
+        } else if (value.type === 'session') {
           lateHeaderLines.push(physicalLine);
         } else if (records.length >= limits.maxItems) {
           truncated = true;
@@ -183,6 +209,10 @@ export function parsePiSession(input: ParseInput): ParseResult {
     diagnose(semanticDiagnostics, 'missing-header', 'warning', undefined, 'No Pi session header was found.');
   }
 
+  if (childTranscript) {
+    deduplicateChildTranscriptPrompt(records);
+  }
+
   if (version === 1) {
     rewriteV1CompactionIndexes(records, ordinalIds, semanticDiagnostics);
   }
@@ -204,6 +234,28 @@ export function parsePiSession(input: ParseInput): ParseResult {
     ...(header === undefined ? {} : { header })
   };
   return freezeObject(result);
+}
+
+function normalizeChildTranscriptHeader(record: RawRecord, diagnostics: Diagnostic[], limits: SanitizedLimits): ParsedHeader {
+  const sessionId = boundedString(record.value.runId, limits.maxStringChars, diagnostics, record.line);
+  const timestamp = boundedString(record.value.timestamp, limits.maxStringChars, diagnostics, record.line);
+  const cwd = boundedString(record.value.cwd, limits.maxStringChars, diagnostics, record.line);
+  const fields: Record<string, SafeScalar> = Object.create(null) as Record<string, SafeScalar>;
+  fields.format = 'pi-subagents-child-transcript';
+  for (const key of ['source', 'agent', 'childIndex']) {
+    const scalar = toSafeScalar(record.value[key], limits, diagnostics, record.line);
+    if (scalar !== undefined) {
+      fields[key] = scalar;
+    }
+  }
+  return freezeObject({
+    sourceLine: record.line,
+    version: 'unknown',
+    ...(sessionId === undefined ? {} : { sessionId }),
+    ...(timestamp === undefined ? {} : { timestamp }),
+    ...(cwd === undefined ? {} : { cwd }),
+    fields: freezeObject(fields)
+  });
 }
 
 function normalizeHeader(record: RawRecord, diagnostics: Diagnostic[], limits: SanitizedLimits): ParsedHeader {
@@ -238,6 +290,127 @@ function normalizeHeader(record: RawRecord, diagnostics: Diagnostic[], limits: S
     ...(cwd === undefined ? {} : { cwd }),
     fields: freezeObject(fields)
   });
+}
+
+function normalizeChildTranscriptEntry(
+  record: RawRecord,
+  parentId: string | null,
+  diagnostics: Diagnostic[],
+  limits: SanitizedLimits
+): NormalizedEntry | undefined {
+  const recordType = boundedString(record.value.recordType, limits.maxStringChars, diagnostics, record.line);
+  if (recordType === undefined || recordType.trim() === '') {
+    diagnose(diagnostics, 'unsupported-entry', 'warning', record.line, 'Skipped a child transcript record without a string recordType.');
+    return undefined;
+  }
+  // These lifecycle markers duplicate tool calls already retained in the
+  // assistant message and contain neither a correlation ID nor result body.
+  if (recordType === 'tool_start' || recordType === 'tool_end') {
+    return undefined;
+  }
+
+  const id = `subagent:${record.line}`;
+  const timestamp = boundedString(record.value.timestamp, limits.maxStringChars, diagnostics, record.line);
+  const envelopeFields = childTranscriptFields(record.value, diagnostics, limits, record.line);
+
+  if (recordType === 'message') {
+    let payload: JsonObject;
+    if (isJsonObject(record.value.message)) {
+      payload = record.value.message;
+    } else {
+      const fallbackRole = boundedString(record.value.role, limits.maxStringChars, diagnostics, record.line);
+      const fallbackText = boundedString(record.value.text, limits.maxStringChars, diagnostics, record.line);
+      payload = {
+        ...(fallbackRole === undefined ? {} : { role: fallbackRole }),
+        ...(fallbackText === undefined ? {} : { content: fallbackText })
+      };
+    }
+    const message = normalizeMessage(payload, 3, record.line, diagnostics, limits);
+    if (message === undefined) {
+      return undefined;
+    }
+    const fields = { ...message.fields, ...envelopeFields };
+    return freezeObject({
+      id,
+      parentId,
+      sourceLine: record.line,
+      type: 'message',
+      kind: entryKind('message', message.role),
+      ...(timestamp === undefined ? {} : { timestamp }),
+      ...(message.role === undefined ? {} : { role: message.role }),
+      content: freezeArray(message.content),
+      fields: freezeObject(fields)
+    });
+  }
+
+  if (recordType === 'stdout' || recordType === 'stderr' || recordType === 'truncated') {
+    const text = boundedString(
+      typeof record.value.text === 'string' ? record.value.text : record.value.message,
+      limits.maxStringChars,
+      diagnostics,
+      record.line
+    );
+    const fields: Record<string, SafeScalar> = {
+      ...envelopeFields,
+      customType: `subagent_${recordType}`,
+      display: true
+    };
+    return freezeObject({
+      id,
+      parentId,
+      sourceLine: record.line,
+      type: 'custom_message',
+      kind: 'customMessage',
+      ...(timestamp === undefined ? {} : { timestamp }),
+      content: freezeArray(text === undefined ? [] : [textContent(text, limits, diagnostics, record.line)]),
+      fields: freezeObject(fields)
+    });
+  }
+
+  const text = boundedString(record.value.text, limits.maxStringChars, diagnostics, record.line);
+  return freezeObject({
+    id,
+    parentId,
+    sourceLine: record.line,
+    type: `subagent_${recordType}`,
+    kind: 'unknown',
+    ...(timestamp === undefined ? {} : { timestamp }),
+    content: freezeArray(text === undefined ? [] : [textContent(text, limits, diagnostics, record.line)]),
+    fields: freezeObject(envelopeFields)
+  });
+}
+
+function childTranscriptFields(
+  value: JsonObject,
+  diagnostics: Diagnostic[],
+  limits: SanitizedLimits,
+  line: number
+): Record<string, SafeScalar> {
+  const fields: Record<string, SafeScalar> = Object.create(null) as Record<string, SafeScalar>;
+  for (const key of ['recordType', 'source', 'agent', 'childIndex', 'sourceEventType', 'model', 'stopReason', 'errorMessage']) {
+    const scalar = toSafeScalar(value[key], limits, diagnostics, line);
+    if (scalar !== undefined) {
+      fields[key] = scalar;
+    }
+  }
+  return fields;
+}
+
+function deduplicateChildTranscriptPrompt(records: NormalizedEntry[]): void {
+  const hasRuntimeUserMessage = records.some((entry) => entry.role === 'user' && entry.fields.sourceEventType === 'message_end');
+  if (hasRuntimeUserMessage) {
+    dropChildInitialPrompts(records);
+  }
+}
+
+function dropChildInitialPrompts(records: NormalizedEntry[]): void {
+  const retained = records.filter((entry) => !(entry.role === 'user' && entry.fields.sourceEventType === 'initial_prompt'));
+  let parentId: string | null = null;
+  records.splice(0, records.length, ...retained.map((entry) => {
+    const linked = freezeObject({ ...entry, parentId });
+    parentId = entry.id;
+    return linked;
+  }));
 }
 
 function normalizeEntry(
@@ -505,6 +678,22 @@ function rewriteV1CompactionIndexes(
     delete fields.firstKeptEntryIndex;
     records[index] = freezeObject({ ...entry, fields: freezeObject(fields) });
   }
+}
+
+function isChildRuntimeUserRecord(value: JsonObject): boolean {
+  if (value.recordType !== 'message' || value.sourceEventType !== 'message_end') {
+    return false;
+  }
+  return value.role === 'user' || (isJsonObject(value.message) && value.message.role === 'user');
+}
+
+function isChildTranscriptRecord(value: JsonObject): boolean {
+  return value.version === 1
+    && typeof value.recordType === 'string'
+    && (value.source === 'foreground' || value.source === 'async')
+    && typeof value.runId === 'string'
+    && typeof value.agent === 'string'
+    && typeof value.cwd === 'string';
 }
 
 function isKnownEntryType(type: string): boolean {

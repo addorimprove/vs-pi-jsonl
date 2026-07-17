@@ -2,6 +2,11 @@
 
 All notable changes are documented here.
 
+## Unreleased
+
+### Added
+- Compatibility with version 1 pi-subagents child transcript logs, including linear message projection, thinking/tool results, stream notices, prompt de-duplication, and live incomplete-tail recovery.
+
 ## 0.0.1 — 2026-07-16
 
 ### Added

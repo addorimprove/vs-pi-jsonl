@@ -57,6 +57,42 @@ test('normalizes stored v2 and v3 identities, including the v3 hookMessage compa
   ]);
 });
 
+test('adapts current pi-subagents child transcripts into one bounded linear conversation', () => {
+  const result = parseFixture('subagent-child-transcript.jsonl');
+
+  assert.equal(result.header?.sessionId, 'synthetic-run');
+  assert.equal(result.header?.cwd, '/synthetic/project');
+  assert.equal(result.header?.fields.format, 'pi-subagents-child-transcript');
+  assert.equal(result.header?.fields.agent, 'reviewer');
+  assert.equal(result.source.version, 'unknown');
+  assert.equal(result.diagnostics.some((diagnostic) => diagnostic.code === 'missing-header'), false);
+  assert.deepEqual(result.records.map(({ id, parentId, sourceLine, kind }) => ({ id, parentId, sourceLine, kind })), [
+    { id: 'subagent:2', parentId: null, sourceLine: 2, kind: 'user' },
+    { id: 'subagent:3', parentId: 'subagent:2', sourceLine: 3, kind: 'assistant' },
+    { id: 'subagent:6', parentId: 'subagent:3', sourceLine: 6, kind: 'tool' },
+    { id: 'subagent:7', parentId: 'subagent:6', sourceLine: 7, kind: 'customMessage' },
+    { id: 'subagent:8', parentId: 'subagent:7', sourceLine: 8, kind: 'customMessage' },
+    { id: 'subagent:9', parentId: 'subagent:8', sourceLine: 9, kind: 'customMessage' }
+  ]);
+  assert.deepEqual(result.records[0]?.content, [{ kind: 'text', text: 'Task: Review the change.' }]);
+  assert.equal(result.model.items.some((item) => item.sourceLine === 1), false, 'the writer-only initial prompt is replaced by Pi’s runtime user message');
+  assert.deepEqual(result.model.items.filter((item) => item.sourceId === 'subagent:3').map((item) => item.blocks ?? item.tool), [
+    [
+      { kind: 'text', text: 'Inspecting the change.' },
+      { kind: 'thinking', text: 'Check the relevant file.' }
+    ],
+    { callId: 'call-1', name: 'read', argumentsText: '{"path":"src/example.ts"}', resultText: 'export const answer = 42;', isError: false },
+    { callId: 'call-2', name: 'bash', argumentsText: '{"command":"npm test"}' }
+  ]);
+  assert.deepEqual(result.model.items.slice(-3).map(({ title, blocks }) => ({ title, text: blocks?.[0]?.text })), [
+    { title: 'Standard output', text: 'runner output' },
+    { title: 'Standard error', text: 'runner warning' },
+    { title: 'Transcript truncated', text: 'Child transcript exceeded 1024 bytes; further records were omitted.' }
+  ]);
+  assert.equal(result.model.items.some((item) => item.sourceLine === 4 || item.sourceLine === 5), false, 'redundant uncorrelated tool lifecycle markers are omitted');
+  assert.equal(result.diagnostics.length, 0);
+});
+
 test('best-effort parses future versions while preserving the declared version and warning', () => {
   const result = parseFixture('future-version.jsonl');
 

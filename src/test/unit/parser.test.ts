@@ -61,6 +61,20 @@ test('recovers valid v2/v3 records around malformed input and diagnoses duplicat
   assert.match(result.diagnostics[2]?.message ?? '', /incomplete trailing/i);
 });
 
+test('keeps a lone child-transcript initial prompt while recovering an incomplete live tail', () => {
+  const result = parse([
+    '{"version":1,"recordType":"message","source":"async","runId":"live-run","agent":"worker","cwd":"/synthetic","timestamp":"2026-07-17T00:00:00.000Z","sourceEventType":"initial_prompt","role":"user","text":"Run the task."}',
+    '{"version":1'
+  ].join('\n'));
+
+  assert.equal(result.header?.sessionId, 'live-run');
+  assert.deepEqual(result.records.map(({ id, parentId, role, content }) => ({ id, parentId, role, content })), [
+    { id: 'subagent:1', parentId: null, role: 'user', content: [{ kind: 'text', text: 'Run the task.' }] }
+  ]);
+  assert.deepEqual(result.diagnostics.map(({ code, line }) => ({ code, line })), [{ code: 'invalid-json', line: 2 }]);
+  assert.match(result.diagnostics[0]?.message ?? '', /incomplete trailing/i);
+});
+
 test('future versions remain best effort and invalid record IDs do not enter the handoff', () => {
   const result = parse([
     '{"type":"session","version":99,"id":"s"}',

@@ -26,7 +26,7 @@ Or select **Extensions: Install from VSIX…** in VS Code.
 3. Search or filter the session tree. Press <kbd>T</kbd> for thinking and <kbd>O</kbd> for tool output.
 4. Select **Open JSONL Source** to return to the text editor.
 
-Supports Pi v1–v3 sessions, live refresh, malformed-line recovery, bounded paging, and responsive navigation. JSONL remains a normal text editor by default.
+Supports Pi v1–v3 sessions and pi-subagents child transcript logs, with live refresh, malformed-line recovery, bounded paging, and responsive navigation. JSONL remains a normal text editor by default.
 
 ## Scope
 

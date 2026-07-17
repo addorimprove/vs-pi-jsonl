@@ -49,6 +49,45 @@ test('enforces byte, physical-line, and accepted-entry limits deterministically'
   assert.deepEqual(itemLimited.diagnostics.map(({ code, line }) => ({ code, line })), [{ code: 'record-limit', line: 3 }]);
 });
 
+test('applies child-transcript item limits after replacing the duplicated initial prompt', () => {
+  const envelope = { version: 1, source: 'async', runId: 'limited-run', agent: 'worker', cwd: '/synthetic' };
+  const lines = [
+    JSON.stringify({ ...envelope, recordType: 'message', sourceEventType: 'initial_prompt', role: 'user', text: 'Do the task.' }),
+    JSON.stringify({ ...envelope, recordType: 'message', sourceEventType: 'message_end', role: 'user', message: { role: 'user', content: 'Task: Do the task.' } }),
+    JSON.stringify({ ...envelope, recordType: 'message', sourceEventType: 'message_end', role: 'assistant', message: { role: 'assistant', content: 'Done.' } })
+  ];
+
+  const oneItem = parse(lines.join('\n'), { ...DEFAULT_PARSE_LIMITS, maxItems: 1 });
+  assert.deepEqual(oneItem.records.map(({ sourceLine, role }) => ({ sourceLine, role })), [{ sourceLine: 2, role: 'user' }]);
+  assert.deepEqual(oneItem.diagnostics.map(({ code, line }) => ({ code, line })), [{ code: 'record-limit', line: 3 }]);
+
+  const twoItems = parse(lines.join('\n'), { ...DEFAULT_PARSE_LIMITS, maxItems: 2 });
+  assert.deepEqual(twoItems.records.map(({ sourceLine, role }) => ({ sourceLine, role })), [
+    { sourceLine: 2, role: 'user' },
+    { sourceLine: 3, role: 'assistant' }
+  ]);
+  assert.equal(twoItems.diagnostics.length, 0);
+});
+
+test('does not validate duplicated top-level child message text when nested content is authoritative', () => {
+  const longText = 'x'.repeat(33);
+  const result = parse(JSON.stringify({
+    version: 1,
+    recordType: 'message',
+    source: 'async',
+    runId: 'diagnostic-run',
+    agent: 'worker',
+    cwd: '/synthetic',
+    sourceEventType: 'message_end',
+    role: 'assistant',
+    text: longText,
+    message: { role: 'assistant', content: longText }
+  }), { ...DEFAULT_PARSE_LIMITS, maxStringChars: 32 });
+
+  assert.deepEqual(result.records[0]?.content, [{ kind: 'text', text: 'x'.repeat(32), truncated: true }]);
+  assert.deepEqual(result.diagnostics.map(({ code, line }) => ({ code, line })), [{ code: 'string-truncated', line: 1 }]);
+});
+
 test('does not count a trailing newline as an extra physical record at the exact line limit', () => {
   const result = parse(`${header}\n${first}\n`, { ...DEFAULT_PARSE_LIMITS, maxLines: 2 });
 

@@ -13,6 +13,11 @@ A session is UTF-8 JSONL: one JSON object per physical line. The canonical first
 
 The parser never writes/migrates/reorders the source file. It accepts only a single session header; a late/duplicate header is diagnostic metadata, not a conversation entry.
 
+### pi-subagents child transcript adapter
+Version 1 child transcript artifacts are detected only when the first meaningful record has the pi-subagents envelope (`version: 1`, `recordType`, `source`, `runId`, `agent`, and `cwd`). They do not carry a Pi session header or graph IDs, so the adapter synthesizes a safe header from the run envelope and deterministic `subagent:<physical-line>` IDs with linear parent links.
+
+`recordType: "message"` reuses the normal nested message/content adapter. If both the writer's `initial_prompt` and Pi's runtime user `message_end` are present, only the runtime message is shown; a lone initial prompt remains visible for an incomplete launch. `tool_start`/`tool_end` are accepted but omitted because they duplicate assistant tool-call blocks and contain no reliable call ID or result. Tool results continue to pair by the nested `message.toolCallId`. Bounded `stdout`, `stderr`, and `truncated` records become inert transcript notices. Unknown record types remain bounded opaque entries.
+
 ## Validation and recovery rules
 1. Decode as UTF-8 with replacement, split by physical LF; tolerate CRLF and a final empty line.
 2. Enforce byte, line, record, nesting, string, image-metadata, and total-display limits before/while parsing ([PERFORMANCE.md](PERFORMANCE.md)).
@@ -22,7 +27,7 @@ The parser never writes/migrates/reorders the source file. It accepts only a sin
 6. Unknown entry types become `unknown` normalized items with safe scalar metadata only. Unknown message roles/content blocks are similarly summarized.
 7. No path can be inferred when no accepted entry exists: return an empty model plus diagnostics. An absent/bad header is a warning; a file is not rejected solely for it.
 
-## Latest-active-branch inference (v1–v3)
+## Latest-active-branch inference (v1–v3 and child transcripts)
 For every supported version, Pi's loaded `SessionManager` indexes physical entries in read order and assigns its leaf to the last non-header entry; `pi --export` observed this behavior. We reproduce it **only as a viewer convention** after the version adapter has produced linkable IDs:
 1. Take the last accepted, linkable non-header entry in physical order as the candidate leaf (including label/session-info/custom records, matching Pi).
 2. Follow `parentId` to a root, stopping on a missing parent/cycle and retaining the valid prefix.
